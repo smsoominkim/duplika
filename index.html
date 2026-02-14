@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+    <!-- Pretendard for Korean -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -19,7 +21,7 @@
                         delphi: {
                             bg: '#FDFBF7',
                             dark: '#1A1A1A',
-                            accent: '#D9432F', // Reddish orange accent
+                            accent: '#D9432F',
                             card: '#F5F2EB'
                         }
                     },
@@ -41,24 +43,22 @@
             color: #1A1A1A;
             font-family: 'Inter', sans-serif;
         }
+        body.lang-ko {
+            font-family: 'Pretendard', sans-serif;
+        }
         .font-serif-display {
             font-family: 'Newsreader', serif;
+        }
+        body.lang-ko .font-serif-display {
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 600;
         }
         .hero-gradient {
             background: radial-gradient(circle at 50% 50%, rgba(217, 67, 47, 0.15) 0%, rgba(253, 251, 247, 0) 70%);
         }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FDFBF7;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ddd;
-            border-radius: 4px;
-        }
-        /* Animation utilities */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
         .fade-up {
             animation: fadeUp 0.8s ease-out forwards;
             opacity: 0;
@@ -67,15 +67,9 @@
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
-
         @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* Floating Animation for new section */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -83,81 +77,80 @@
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
+        /* Language toggle */
+        .lang-toggle span { cursor: pointer; transition: all 0.2s; }
+        .lang-toggle span.active { color: #1A1A1A; font-weight: 600; }
+        .lang-toggle span:not(.active) { color: #9CA3AF; }
+        .lang-toggle span:not(.active):hover { color: #6B7280; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
 
-    <!-- Navigation (Height Reduced) -->
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-[#FDFBF7]/90 backdrop-blur-md border-b border-gray-100/50">
         <div class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-            <!-- Logo -->
             <div class="flex items-center gap-2 cursor-pointer">
                 <span class="font-serif-display font-medium text-xl tracking-tight">Duplika</span>
             </div>
 
-            <!-- Desktop Links -->
             <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-                <a href="#" class="hover:text-black transition">Product</a>
-                <a href="#" class="hover:text-black transition">Solutions</a>
-                <a href="#" class="hover:text-black transition">Pricing</a>
-                <a href="#" class="hover:text-black transition">Resources</a>
+                <a href="#" class="hover:text-black transition" data-i18n="nav_product">Product</a>
+                <a href="#" class="hover:text-black transition" data-i18n="nav_solutions">Solutions</a>
+                <a href="#" class="hover:text-black transition" data-i18n="nav_pricing">Pricing</a>
+                <a href="#" class="hover:text-black transition" data-i18n="nav_resources">Resources</a>
             </div>
 
-            <!-- Auth Buttons (Padding Reduced) -->
+            <!-- Language Toggle -->
             <div class="flex items-center gap-3">
-                <a href="#" class="hidden md:block text-sm font-medium hover:text-black text-gray-600">Log in</a>
-                <a href="#" class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:bg-gray-800 transition shadow-lg shadow-gray-200">
-                    Sign up free
-                </a>
+                <div class="lang-toggle flex items-center gap-1 text-xs select-none">
+                    <span id="lang-ko" onclick="setLang('ko')">KO</span>
+                    <span class="text-gray-300">|</span>
+                    <span id="lang-en" class="active" onclick="setLang('en')">EN</span>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section (Padding Reduced) -->
+    <!-- Hero Section -->
     <section class="relative pt-28 pb-12 px-6 overflow-hidden">
         <div class="hero-gradient absolute top-0 left-0 w-full h-full pointer-events-none"></div>
-        
+
         <div class="max-w-4xl mx-auto text-center relative z-10 fade-up">
             <div class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1 mb-6 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                <span class="text-[10px] font-medium text-gray-600 tracking-wide uppercase">Duplika 1.0 is live</span>
+                <span class="text-[10px] font-medium text-gray-600 tracking-wide uppercase" data-i18n="badge">Duplika, Coming Soon</span>
             </div>
-            
-            <!-- Font Size Reduced -->
-            <h1 class="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] mb-6 text-gray-900 tracking-tight">
+
+            <h1 class="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] mb-6 text-gray-900 tracking-tight" data-i18n-html="hero_title">
                 Build Your <br> <span class="italic text-gray-800">Digital AI Clone</span>
             </h1>
-            
-            <p class="text-base md:text-lg text-gray-600 mb-8 max-w-xl mx-auto leading-normal">
+
+            <p class="text-base md:text-lg text-gray-600 mb-8 max-w-xl mx-auto leading-normal" data-i18n="hero_desc">
                  Scale your expertise and reach to engage your audience 24/7.
             </p>
-            
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16">
-                <button class="w-full sm:w-auto px-6 py-3 bg-black text-white rounded-full text-sm font-medium hover:scale-105 transition duration-300 shadow-xl">
-                    Clone yourself
-                </button>
-                <button class="w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-900 rounded-full text-sm font-medium hover:bg-gray-50 transition duration-300 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-play text-[10px]"></i> Watch Demo
-                </button>
+
+            <div class="flex items-center justify-center mb-16">
+                <a href="https://southern-energy-6f7.notion.site/3073689d9f4581ed8d11c787bdda0fd3?pvs=105" target="_blank" class="w-full sm:w-auto px-6 py-3 bg-black text-white rounded-full text-sm font-medium hover:scale-105 transition duration-300 shadow-xl" data-i18n="hero_cta">
+                    Join the Waitlist
+                </a>
             </div>
         </div>
 
-        <!-- Hero Images / Cards (Gap Reduced) -->
+        <!-- Hero Cards -->
         <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 fade-up delay-200">
             <!-- Card 1 -->
             <div class="group relative aspect-[3/4] rounded-xl overflow-hidden shadow-card hover:shadow-2xl transition duration-500">
                 <img src="https://raw.githubusercontent.com/smsoominkim/duplica/refs/heads/main/images/duplica1.JPG" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop'" alt="Person 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
-                    <span class="text-white font-serif-display text-xl italic">The Executive</span>
-                    <span class="text-white/80 text-xs mt-1">Available for strategy calls 24/7</span>
-                    <!-- Link Updated: Icon added, color changed to delphi-accent -->
+                    <span class="text-white font-serif-display text-xl italic" data-i18n="card1_title">The Executive</span>
+                    <span class="text-white/80 text-xs mt-1" data-i18n="card1_desc">Available for strategy calls 24/7</span>
                     <a href="#" class="text-delphi-accent text-[10px] font-medium mt-2 block tracking-wide hover:text-white transition-colors">
                         <i class="fa-solid fa-link mr-1"></i> duplika.me/ExecutiveLee
                     </a>
                 </div>
             </div>
-            
-            <!-- Card 2 (Center - Elevated) -->
+
+            <!-- Card 2 -->
             <div class="group relative aspect-[3/4] rounded-xl overflow-hidden shadow-card hover:shadow-2xl transition duration-500 md:-mt-8 border-4 border-white">
                 <img src="https://github.com/smsoominkim/duplica/blob/main/images/duplica2.JPG?raw=true" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop'" alt="Person 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
@@ -166,10 +159,9 @@
                             <span class="h-1 w-10 bg-white/60 rounded-full animate-pulse"></span>
                             <span class="h-1 w-6 bg-white/40 rounded-full"></span>
                         </div>
-                        <p class="text-white text-[10px] leading-relaxed">"You don’t have to become someone else to be worthy. Take just 10 seconds today to breathe for you."</p>
+                        <p class="text-white text-[10px] leading-relaxed" data-i18n="card2_quote">"You don't have to become someone else to be worthy. Take just 10 seconds today to breathe for you."</p>
                     </div>
-                    <span class="text-white font-serif-display text-xl italic">The Mindfulness Coach</span>
-                    <!-- Link Updated: Icon added, color changed to delphi-accent -->
+                    <span class="text-white font-serif-display text-xl italic" data-i18n="card2_title">The Mindfulness Coach</span>
                     <a href="#" class="text-delphi-accent text-[10px] font-medium mt-1 block tracking-wide hover:text-white transition-colors">
                         <i class="fa-solid fa-link mr-1"></i> duplika.me/LifeCoachMia
                     </a>
@@ -180,9 +172,8 @@
             <div class="group relative aspect-[3/4] rounded-xl overflow-hidden shadow-card hover:shadow-2xl transition duration-500">
                 <img src="https://github.com/smsoominkim/duplica/blob/main/images/duplica3.JPG?raw=true" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop'" alt="Person 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
-                    <span class="text-white font-serif-display text-xl italic">The Creator</span>
-                    <span class="text-white/80 text-xs mt-1">Engaging with 50k fans simultaneously</span>
-                    <!-- Link Updated: Icon added, color changed to delphi-accent -->
+                    <span class="text-white font-serif-display text-xl italic" data-i18n="card3_title">The Creator</span>
+                    <span class="text-white/80 text-xs mt-1" data-i18n="card3_desc">Engaging with 50k fans simultaneously</span>
                     <a href="#" class="text-delphi-accent text-[10px] font-medium mt-2 block tracking-wide hover:text-white transition-colors">
                         <i class="fa-solid fa-link mr-1"></i> duplika.me/DirectorK
                     </a>
@@ -191,10 +182,10 @@
         </div>
     </section>
 
-    <!-- Social Proof (Padding Reduced) -->
+    <!-- Social Proof -->
     <section class="py-8 border-y border-gray-200/60 bg-white/50">
         <div class="max-w-6xl mx-auto px-6 text-center">
-            <p class="text-xs text-gray-500 mb-6 font-medium tracking-wider uppercase">Trusted by industry leaders</p>
+            <p class="text-xs text-gray-500 mb-6 font-medium tracking-wider uppercase" data-i18n="social_proof">Trusted by industry leaders</p>
             <div class="flex flex-wrap justify-center items-center gap-10 opacity-60 grayscale hover:grayscale-0 transition duration-500 transform scale-90">
                 <i class="fab fa-google text-xl"></i>
                 <i class="fab fa-spotify text-xl"></i>
@@ -205,91 +196,77 @@
         </div>
     </section>
 
-    <!-- Value Prop Text (Padding Reduced) -->
+    <!-- Value Prop -->
     <section class="py-20 px-6 text-center">
         <div class="max-w-3xl mx-auto">
-            <span class="text-delphi-accent font-medium tracking-wide text-xs uppercase mb-3 block">The Problem</span>
-            <h2 class="font-serif-display text-4xl md:text-5xl text-gray-900 mb-4">Time is scarce. <br> <span class="italic text-gray-400">Value is infinite.</span></h2>
-            <p class="text-base text-gray-600">You only have 24 hours in a day. Your digital self has no limits.</p>
+            <span class="text-delphi-accent font-medium tracking-wide text-xs uppercase mb-3 block" data-i18n="problem_label">The Problem</span>
+            <h2 class="font-serif-display text-4xl md:text-5xl text-gray-900 mb-4" data-i18n-html="problem_title">Time is scarce. <br> <span class="italic text-gray-400">Value is infinite.</span></h2>
+            <p class="text-base text-gray-600" data-i18n="problem_desc">You only have 24 hours in a day. Your digital self has no limits.</p>
         </div>
     </section>
 
-    <!-- Feature 1: Voice/Chat (Padding & Gap Reduced) -->
+    <!-- Feature 1: Voice/Chat -->
     <section class="py-14 px-6">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div class="order-2 md:order-1 relative">
-                <!-- UI Mockup: Chat -->
                 <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-5 max-w-sm mx-auto transform rotate-[-2deg] hover:rotate-0 transition duration-500">
                     <div class="flex items-center gap-3 mb-4 border-b border-gray-50 pb-3">
                         <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
                             <img src="https://github.com/smsoominkim/duplica/blob/main/images/duplica1.JPG?raw=true" class="w-full h-full object-cover">
                         </div>
                         <div>
-                            <div class="font-bold text-xs">Executive Lee</div>
-                            <div class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1 h-1 bg-green-500 rounded-full"></span> Online</div>
+                            <div class="font-bold text-xs" data-i18n="chat1_name">Executive Lee</div>
+                            <div class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1 h-1 bg-green-500 rounded-full"></span> <span data-i18n="online">Online</span></div>
                             <a href="#" class="text-delphi-accent text-[10px] font-medium block mt-0.5 hover:underline">
                                 <i class="fa-solid fa-link mr-1"></i> duplika.me/ExecutiveLee
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="space-y-3">
-    <!-- Bot -->
-    <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]">
-        Are you tracking churn or customer satisfaction right now?
-    </div>
-
-    <!-- Client -->
-    <div class="bg-black text-white rounded-xl rounded-tr-none p-3 text-xs max-w-[90%] ml-auto">
-        Not in a structured way.
-    </div>
-
-    <!-- Bot -->
-    <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]">
-        That’s likely affecting retention without you realizing it.
-    </div>
-
-    <!-- Client -->
-    <div class="bg-black text-white rounded-xl rounded-tr-none p-3 text-xs max-w-[90%] ml-auto">
-        So what should we start with?
-    </div>
-
-    <!-- Bot -->
-    <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]">
-        First, I recommend exit interviews and a short satisfaction survey.
-        <div class="mt-3 flex gap-2">
-            <span class="text-[10px] bg-white border px-2 py-1 rounded text-gray-400">Source: Podcast Ep #42</span>
-        </div>
-    </div>
-
-    <!-- Bot Typing Effect -->
-    <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]">
-        <div class="flex gap-1">
-            <span class="w-0.5 h-0.5 bg-gray-400 rounded-full animate-bounce"></span>
-            <span class="w-0.5 h-0.5 bg-gray-400 rounded-full animate-bounce delay-100"></span>
-            <span class="w-0.5 h-0.5 bg-gray-400 rounded-full animate-bounce delay-200"></span>
-        </div>
-    </div>
-</div>
-
+                        <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]" data-i18n="chat1_msg1">
+                            Are you tracking churn or customer satisfaction right now?
+                        </div>
+                        <div class="bg-black text-white rounded-xl rounded-tr-none p-3 text-xs max-w-[90%] ml-auto" data-i18n="chat1_msg2">
+                            Not in a structured way.
+                        </div>
+                        <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]" data-i18n="chat1_msg3">
+                            That's likely affecting retention without you realizing it.
+                        </div>
+                        <div class="bg-black text-white rounded-xl rounded-tr-none p-3 text-xs max-w-[90%] ml-auto" data-i18n="chat1_msg4">
+                            So what should we start with?
+                        </div>
+                        <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]" data-i18n-html="chat1_msg5">
+                            First, I recommend exit interviews and a short satisfaction survey.
+                            <div class="mt-3 flex gap-2">
+                                <span class="text-[10px] bg-white border px-2 py-1 rounded text-gray-400">Source: Podcast Ep #42</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 rounded-xl rounded-tl-none p-3 text-xs text-gray-700 max-w-[90%]">
+                            <div class="flex gap-1">
+                                <span class="w-0.5 h-0.5 bg-gray-400 rounded-full animate-bounce"></span>
+                                <span class="w-0.5 h-0.5 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+                                <span class="w-0.5 h-0.5 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="order-1 md:order-2">
                 <div class="w-10 h-10 bg-delphi-card rounded-lg flex items-center justify-center mb-4">
                     <i class="fa-solid fa-message text-lg text-gray-700"></i>
                 </div>
-                <h3 class="font-serif-display text-3xl md:text-4xl mb-4">Clone your <br><span class="italic text-gray-500">Tone & Voice</span></h3>
-                <p class="text-gray-600 text-base leading-normal mb-6">
+                <h3 class="font-serif-display text-3xl md:text-4xl mb-4" data-i18n-html="feature1_title">Clone your <br><span class="italic text-gray-500">Tone & Voice</span></h3>
+                <p class="text-gray-600 text-base leading-normal mb-6" data-i18n="feature1_desc">
                     Upload your podcasts, videos, and text. Replica learns how you speak, your mannerisms, and your unique personality to create a clone that truly sounds like you.
                 </p>
-                <a href="#" class="text-black text-sm font-medium border-b border-black pb-0.5 hover:text-delphi-accent hover:border-delphi-accent transition">Learn more about cloning</a>
+                <a href="#" class="text-black text-sm font-medium border-b border-black pb-0.5 hover:text-delphi-accent hover:border-delphi-accent transition" data-i18n="feature1_link">Learn more about cloning</a>
             </div>
         </div>
     </section>
 
-    <!-- Section: Clone Thinking (Visual Flow) - Merged with original container padding/rounding -->
+    <!-- Section: Clone Thinking -->
     <section class="py-14 px-6 bg-[#F2ECE6] rounded-[2.5rem] my-10 max-w-[98%] mx-auto relative overflow-hidden">
-         <!-- Decorative elements -->
          <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-gray-400 rounded-full"></div>
              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-gray-400 rounded-full"></div>
@@ -297,16 +274,13 @@
 
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                 <!-- Updated Text Color -->
-                 <span class="text-xs font-bold tracking-widest text-delphi-accent uppercase mb-4 block">Knowledge Base</span>
-                <h2 class="text-4xl md:text-5xl font-serif-display mb-6">Clone Your Best Thinking.</h2>
-                <p class="text-gray-600 max-w-xl mx-auto">Upload files, connect YouTube, or sync your Notion. Duplika synthesizes your digital footprint into a coherent mind.</p>
+                 <span class="text-xs font-bold tracking-widest text-delphi-accent uppercase mb-4 block" data-i18n="thinking_label">Knowledge Base</span>
+                <h2 class="text-4xl md:text-5xl font-serif-display mb-6" data-i18n="thinking_title">Clone Your Best Thinking.</h2>
+                <p class="text-gray-600 max-w-xl mx-auto" data-i18n="thinking_desc">Upload files, connect YouTube, or sync your Notion. Duplika synthesizes your digital footprint into a coherent mind.</p>
             </div>
 
-            <!-- Integration Visual -->
             <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-0">
-                
-                <!-- Inputs -->
+
                 <div class="flex flex-row md:flex-col gap-4 animate-float" style="animation-delay: 0s;">
                     <div class="bg-white p-4 rounded-xl shadow-md flex items-center gap-3 w-48">
                         <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center text-red-500"><i class="fab fa-youtube"></i></div>
@@ -316,19 +290,16 @@
                         <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-500"><i class="fas fa-file-pdf"></i></div>
                         <span class="text-sm font-medium">PDFs</span>
                     </div>
-                     <!-- Updated to Instagram -->
                      <div class="bg-white p-4 rounded-xl shadow-md flex items-center gap-3 w-48">
                         <div class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center text-pink-600"><i class="fab fa-instagram"></i></div>
                         <span class="text-sm font-medium">Instagram</span>
                     </div>
                 </div>
 
-                <!-- Connectors (Desktop) -->
                 <div class="hidden md:flex w-32 h-[1px] bg-gray-300 relative">
                     <div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full"></div>
                 </div>
 
-                <!-- The Brain / Core -->
                 <div class="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
                      <div class="absolute inset-0 bg-[#D95D39]/10 rounded-full animate-pulse"></div>
                      <div class="absolute inset-4 bg-[#D95D39]/20 rounded-full blur-xl"></div>
@@ -340,125 +311,111 @@
                      </div>
                 </div>
 
-                <!-- Connectors (Desktop) -->
                 <div class="hidden md:flex w-32 h-[1px] bg-gray-300 relative">
                     <div class="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full"></div>
                 </div>
 
-                <!-- Output -->
                 <div class="flex flex-row md:flex-col gap-4 animate-float md:items-end" style="animation-delay: 1s;">
                      <div class="bg-white p-4 rounded-xl shadow-md flex items-center gap-3 w-52">
                         <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white"><i class="fas fa-comment"></i></div>
-                        <span class="text-sm font-medium">1:1 Chat</span>
+                        <span class="text-sm font-medium" data-i18n="output_chat">1:1 Chat</span>
                     </div>
                     <div class="bg-white p-4 rounded-xl shadow-md flex items-center gap-3 w-52 mr-4 md:mr-8">
                         <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600"><i class="fab fa-slack"></i></div>
-                        <span class="text-sm font-medium">Slack Bot</span>
+                        <span class="text-sm font-medium" data-i18n="output_slack">Slack Bot</span>
                     </div>
                      <div class="bg-white p-4 rounded-xl shadow-md flex items-center gap-3 w-52">
                         <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500"><i class="fas fa-globe"></i></div>
-                        <span class="text-sm font-medium">Website Embed</span>
+                        <span class="text-sm font-medium" data-i18n="output_embed">Website Embed</span>
                     </div>
                 </div>
 
             </div>
         </section>
 
-    <!-- Feature 3: Direct Link & Chat (Padding Reduced) -->
+    <!-- Feature 3: Direct Link & Chat -->
     <section class="py-14 px-6">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div class="relative">
-                <!-- UI Mockup: Instagram Profile to Chat -->
-                <!-- Changed to minimal style: removed phone bezel, simplified container -->
                 <div class="max-w-[280px] mx-auto rounded-[1.5rem] overflow-hidden shadow-2xl border border-gray-100 relative group">
                     <div class="bg-white h-[420px] flex flex-col relative overflow-hidden">
-                        <!-- Instagram Profile View -->
                         <div class="h-full w-full absolute top-0 left-0 transition-transform duration-500 ease-in-out z-10" id="ig-profile">
                             <img src="https://github.com/smsoominkim/duplica/blob/main/images/Instagram_Coach.png?raw=true" alt="Instagram Profile" class="w-full h-full object-cover">
-                            
-                            <!-- Removed Red Box and Clickable Area overlays -->
                         </div>
-                        
-                        <!-- Chat View (Hidden initially - kept markup just in case, but inaccessible without trigger) -->
+
                         <div class="h-full w-full absolute top-0 left-0 transform translate-x-full transition-transform duration-500 ease-in-out z-10 bg-gray-50 flex flex-col" id="chat-view">
-                            <!-- Chat Header -->
                             <div class="bg-white p-4 border-b border-gray-100 flex items-center gap-3 shadow-sm">
                                 <div class="w-8 h-8 rounded-full overflow-hidden">
                                     <img src="https://github.com/smsoominkim/duplica/blob/main/images/duplica2.JPG?raw=true" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-sm">Life Coach Mia</h4>
-                                    <p class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1 h-1 bg-green-500 rounded-full"></span> Online</p>
+                                    <p class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1 h-1 bg-green-500 rounded-full"></span> <span data-i18n="online">Online</span></p>
                                 </div>
                                 <button class="ml-auto text-gray-400" onclick="document.getElementById('ig-profile').style.transform = 'translateX(0)'; document.getElementById('chat-view').style.transform = 'translateX(100%)';"><i class="fa-solid fa-xmark"></i></button>
                             </div>
-                            
-                            <!-- Chat Messages -->
+
                             <div class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50">
-                                <div class="bg-white rounded-xl rounded-tl-none p-3 text-xs text-gray-700 shadow-sm max-w-[90%]">
+                                <div class="bg-white rounded-xl rounded-tl-none p-3 text-xs text-gray-700 shadow-sm max-w-[90%]" data-i18n="chat2_msg1">
                                     Hey there! I'm Mia's AI. How can I help you today?
                                 </div>
-                                <div class="bg-black text-white rounded-xl rounded-tr-none p-3 text-xs shadow-sm max-w-[90%] ml-auto">
+                                <div class="bg-black text-white rounded-xl rounded-tr-none p-3 text-xs shadow-sm max-w-[90%] ml-auto" data-i18n="chat2_msg2">
                                     Hi! I'm feeling a bit overwhelmed with my goals.
                                 </div>
-                                <div class="bg-white rounded-xl rounded-tl-none p-3 text-xs text-gray-700 shadow-sm max-w-[90%]">
+                                <div class="bg-white rounded-xl rounded-tl-none p-3 text-xs text-gray-700 shadow-sm max-w-[90%]" data-i18n="chat2_msg3">
                                     I understand. Let's break them down. What's the biggest one on your mind?
                                 </div>
                             </div>
-                            
-                            <!-- Chat Input -->
+
                             <div class="p-3 bg-white border-t border-gray-100 flex items-center gap-2">
-                                <input type="text" placeholder="Type a message..." class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-xs focus:outline-none">
+                                <input type="text" data-i18n-placeholder="chat_placeholder" placeholder="Type a message..." class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-xs focus:outline-none">
                                 <button class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xs"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Removed Hint Text <p class="text-center..." -->
             </div>
-            
+
             <div>
                 <div class="w-10 h-10 bg-delphi-card rounded-lg flex items-center justify-center mb-4">
                     <i class="fa-solid fa-link text-lg text-gray-700"></i>
                 </div>
-                <h3 class="font-serif-display text-3xl md:text-4xl mb-4">Direct Link. <br><span class="italic text-gray-500">Instant Connection.</span></h3>
-                <p class="text-gray-600 text-base leading-normal mb-6">
+                <h3 class="font-serif-display text-3xl md:text-4xl mb-4" data-i18n-html="feature3_title">Direct Link. <br><span class="italic text-gray-500">Instant Connection.</span></h3>
+                <p class="text-gray-600 text-base leading-normal mb-6" data-i18n="feature3_desc">
                     Share your unique duplika.me link on your Instagram bio or any platform. When followers click, they're instantly connected to your AI for a 1-on-1 chat.
                 </p>
                 <div class="flex flex-col gap-3 text-sm font-medium text-gray-800">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-link text-delphi-accent"></i> Seamless Integration in Bio</span>
-                    <span class="flex items-center gap-2"><i class="fa-regular fa-comment-dots text-delphi-accent"></i> Instant 1-on-1 Chat</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-delphi-accent"></i> Available 24/7 to Followers</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-link text-delphi-accent"></i> <span data-i18n="feature3_item1">Seamless Integration in Bio</span></span>
+                    <span class="flex items-center gap-2"><i class="fa-regular fa-comment-dots text-delphi-accent"></i> <span data-i18n="feature3_item2">Instant 1-on-1 Chat</span></span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-delphi-accent"></i> <span data-i18n="feature3_item3">Available 24/7 to Followers</span></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Monetization Section (Padding Reduced) -->
+    <!-- Monetization Section -->
     <section class="py-16 px-6 bg-black text-white rounded-[2.5rem] my-8 max-w-[98%] mx-auto overflow-hidden relative">
         <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-900 to-transparent pointer-events-none"></div>
-        
+
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
             <div class="pl-0 md:pl-8">
-                <span class="text-delphi-accent font-medium tracking-wide text-xs uppercase mb-3 block">Monetize</span>
-                <h3 class="font-serif-display text-3xl md:text-5xl mb-5">Make money <br><span class="italic text-gray-400">while you sleep</span></h3>
-                <p class="text-gray-400 text-base leading-normal mb-6">
+                <span class="text-delphi-accent font-medium tracking-wide text-xs uppercase mb-3 block" data-i18n="monetize_label">Monetize</span>
+                <h3 class="font-serif-display text-3xl md:text-5xl mb-5" data-i18n-html="monetize_title">Make money <br><span class="italic text-gray-400">while you sleep</span></h3>
+                <p class="text-gray-400 text-base leading-normal mb-6" data-i18n="monetize_desc">
                     Set a price per minute or per message. Turn your knowledge into a passive revenue stream that scales infinitely.
                 </p>
-                <button class="bg-white text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-200 transition">Start Earning</button>
+                <button class="bg-white text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-200 transition" data-i18n="monetize_cta">Start Earning</button>
             </div>
 
-            <!-- Dashboard Mockup -->
             <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-2xl">
                 <div class="flex justify-between items-center mb-6">
                     <div>
-                        <p class="text-gray-400 text-xs">Total Revenue</p>
+                        <p class="text-gray-400 text-xs" data-i18n="dash_revenue">Total Revenue</p>
                         <h4 class="text-2xl font-medium">$12,450.00</h4>
                     </div>
-                    <div class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full text-[10px] font-medium">+14% this week</div>
+                    <div class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full text-[10px] font-medium" data-i18n="dash_growth">+14% this week</div>
                 </div>
-                
-                <!-- Simple Graph Bar -->
+
                 <div class="flex items-end gap-2 h-24 mb-5">
                     <div class="flex-1 bg-gray-800 rounded-t-sm h-[40%]"></div>
                     <div class="flex-1 bg-gray-800 rounded-t-sm h-[60%]"></div>
@@ -468,12 +425,12 @@
                     <div class="flex-1 bg-gray-800 rounded-t-sm h-[80%]"></div>
                     <div class="flex-1 bg-white rounded-t-sm h-[95%] shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
                 </div>
-                
+
                 <div class="space-y-2">
                     <div class="flex justify-between items-center py-2 border-b border-gray-800">
                         <div class="flex items-center gap-2">
                             <div class="w-6 h-6 rounded-full bg-gray-700"></div>
-                            <span class="text-xs">Call with Jason</span>
+                            <span class="text-xs" data-i18n="dash_call">Call with Jason</span>
                         </div>
                         <span class="text-xs text-green-400">+$150.00</span>
                     </div>
@@ -482,49 +439,222 @@
         </div>
     </section>
 
-    <!-- Footer (Padding Reduced) -->
+    <!-- Footer -->
     <footer class="pt-12 pb-8 border-t border-gray-200">
         <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
             <div class="col-span-2 md:col-span-2">
                 <span class="font-serif-display font-medium text-xl tracking-tight block mb-4">Duplika</span>
-                <p class="text-gray-500 text-xs max-w-xs leading-normal">
+                <p class="text-gray-500 text-xs max-w-xs leading-normal" data-i18n="footer_desc">
                     The world's leading platform for digital cloning. Clone your expertise, not just your likeness.
                 </p>
             </div>
-            
+
             <div>
-                <h5 class="font-bold text-xs mb-3">Product</h5>
+                <h5 class="font-bold text-xs mb-3" data-i18n="footer_product">Product</h5>
                 <ul class="space-y-1.5 text-xs text-gray-600">
-                    <li><a href="#" class="hover:text-black">Features</a></li>
-                    <li><a href="#" class="hover:text-black">Pricing</a></li>
+                    <li><a href="#" class="hover:text-black" data-i18n="footer_features">Features</a></li>
+                    <li><a href="#" class="hover:text-black" data-i18n="footer_pricing">Pricing</a></li>
                 </ul>
             </div>
-            
+
             <div>
-                <h5 class="font-bold text-xs mb-3">Company</h5>
+                <h5 class="font-bold text-xs mb-3" data-i18n="footer_company">Company</h5>
                 <ul class="space-y-1.5 text-xs text-gray-600">
-                    <li><a href="#" class="hover:text-black">About</a></li>
-                    <li><a href="#" class="hover:text-black">Blog</a></li>
+                    <li><a href="#" class="hover:text-black" data-i18n="footer_about">About</a></li>
+                    <li><a href="#" class="hover:text-black" data-i18n="footer_blog">Blog</a></li>
                 </ul>
             </div>
-            
+
             <div>
-                <h5 class="font-bold text-xs mb-3">Social</h5>
+                <h5 class="font-bold text-xs mb-3" data-i18n="footer_social">Social</h5>
                 <ul class="space-y-1.5 text-xs text-gray-600">
                     <li><a href="#" class="hover:text-black">Twitter</a></li>
                     <li><a href="#" class="hover:text-black">Instagram</a></li>
                 </ul>
             </div>
         </div>
-        
+
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center pt-6 border-t border-gray-100">
-            <p class="text-[10px] text-gray-400">© 2025 Duplika Labs, Inc. All rights reserved.</p>
+            <p class="text-[10px] text-gray-400" data-i18n="footer_copyright">&copy; 2025 Duplika Labs, Inc. All rights reserved.</p>
             <div class="flex gap-4 mt-3 md:mt-0">
-                <a href="#" class="text-[10px] text-gray-400 hover:text-black">Privacy Policy</a>
-                <a href="#" class="text-[10px] text-gray-400 hover:text-black">Terms</a>
+                <a href="#" class="text-[10px] text-gray-400 hover:text-black" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" class="text-[10px] text-gray-400 hover:text-black" data-i18n="footer_terms">Terms</a>
             </div>
         </div>
     </footer>
+
+    <script>
+    const translations = {
+        en: {
+            nav_product: 'Product',
+            nav_solutions: 'Solutions',
+            nav_pricing: 'Pricing',
+            nav_resources: 'Resources',
+            badge: 'Duplika, Coming Soon',
+            hero_title: 'Build Your <br> <span class="italic text-gray-800">Digital AI Clone</span>',
+            hero_desc: 'Scale your expertise and reach to engage your audience 24/7.',
+            hero_cta: 'Join the Waitlist',
+            card1_title: 'The Executive',
+            card1_desc: 'Available for strategy calls 24/7',
+            card2_quote: '"You don\'t have to become someone else to be worthy. Take just 10 seconds today to breathe for you."',
+            card2_title: 'The Mindfulness Coach',
+            card3_title: 'The Creator',
+            card3_desc: 'Engaging with 50k fans simultaneously',
+            social_proof: 'Trusted by industry leaders',
+            problem_label: 'The Problem',
+            problem_title: 'Time is scarce. <br> <span class="italic text-gray-400">Value is infinite.</span>',
+            problem_desc: 'You only have 24 hours in a day. Your digital self has no limits.',
+            chat1_name: 'Executive Lee',
+            online: 'Online',
+            chat1_msg1: 'Are you tracking churn or customer satisfaction right now?',
+            chat1_msg2: 'Not in a structured way.',
+            chat1_msg3: 'That\'s likely affecting retention without you realizing it.',
+            chat1_msg4: 'So what should we start with?',
+            chat1_msg5: 'First, I recommend exit interviews and a short satisfaction survey.<div class="mt-3 flex gap-2"><span class="text-[10px] bg-white border px-2 py-1 rounded text-gray-400">Source: Podcast Ep #42</span></div>',
+            feature1_title: 'Clone your <br><span class="italic text-gray-500">Tone & Voice</span>',
+            feature1_desc: 'Upload your podcasts, videos, and text. Replica learns how you speak, your mannerisms, and your unique personality to create a clone that truly sounds like you.',
+            feature1_link: 'Learn more about cloning',
+            thinking_label: 'Knowledge Base',
+            thinking_title: 'Clone Your Best Thinking.',
+            thinking_desc: 'Upload files, connect YouTube, or sync your Notion. Duplika synthesizes your digital footprint into a coherent mind.',
+            output_chat: '1:1 Chat',
+            output_slack: 'Slack Bot',
+            output_embed: 'Website Embed',
+            chat2_msg1: 'Hey there! I\'m Mia\'s AI. How can I help you today?',
+            chat2_msg2: 'Hi! I\'m feeling a bit overwhelmed with my goals.',
+            chat2_msg3: 'I understand. Let\'s break them down. What\'s the biggest one on your mind?',
+            chat_placeholder: 'Type a message...',
+            feature3_title: 'Direct Link. <br><span class="italic text-gray-500">Instant Connection.</span>',
+            feature3_desc: 'Share your unique duplika.me link on your Instagram bio or any platform. When followers click, they\'re instantly connected to your AI for a 1-on-1 chat.',
+            feature3_item1: 'Seamless Integration in Bio',
+            feature3_item2: 'Instant 1-on-1 Chat',
+            feature3_item3: 'Available 24/7 to Followers',
+            monetize_label: 'Monetize',
+            monetize_title: 'Make money <br><span class="italic text-gray-400">while you sleep</span>',
+            monetize_desc: 'Set a price per minute or per message. Turn your knowledge into a passive revenue stream that scales infinitely.',
+            monetize_cta: 'Start Earning',
+            dash_revenue: 'Total Revenue',
+            dash_growth: '+14% this week',
+            dash_call: 'Call with Jason',
+            footer_desc: 'The world\'s leading platform for digital cloning. Clone your expertise, not just your likeness.',
+            footer_product: 'Product',
+            footer_features: 'Features',
+            footer_pricing: 'Pricing',
+            footer_company: 'Company',
+            footer_about: 'About',
+            footer_blog: 'Blog',
+            footer_social: 'Social',
+            footer_copyright: '&copy; 2025 Duplika Labs, Inc. All rights reserved.',
+            footer_privacy: 'Privacy Policy',
+            footer_terms: 'Terms',
+        },
+        ko: {
+            nav_product: '제품 소개',
+            nav_solutions: '솔루션',
+            nav_pricing: '요금제',
+            nav_resources: '리소스',
+            badge: 'Duplika, 곧 출시',
+            hero_title: '나만의 <br> <span class="italic text-gray-800">디지털 AI 클론</span>을 만드세요',
+            hero_desc: '당신의 전문성을 확장하고, 24시간 오디언스와 소통하세요.',
+            hero_cta: '웨이트리스트 참여하기',
+            card1_title: '비즈니스 리더',
+            card1_desc: '24시간 전략 상담 가능',
+            card2_quote: '"다른 사람이 될 필요 없어요. 오늘 딱 10초만 자신을 위해 숨을 쉬어 보세요."',
+            card2_title: '마인드풀니스 코치',
+            card3_title: '크리에이터',
+            card3_desc: '5만 팬과 동시에 소통',
+            social_proof: '업계 리더들이 신뢰합니다',
+            problem_label: '문제',
+            problem_title: '시간은 한정적입니다. <br> <span class="italic text-gray-400">가치는 무한합니다.</span>',
+            problem_desc: '하루는 24시간뿐이지만, 디지털 자아에는 한계가 없습니다.',
+            chat1_name: '이 대표',
+            online: '온라인',
+            chat1_msg1: '현재 이탈률이나 고객 만족도를 추적하고 계신가요?',
+            chat1_msg2: '체계적으로 하고 있진 않습니다.',
+            chat1_msg3: '그게 모르는 사이에 고객 유지율에 영향을 주고 있을 겁니다.',
+            chat1_msg4: '그러면 무엇부터 시작해야 할까요?',
+            chat1_msg5: '먼저, 퇴사 인터뷰와 간단한 만족도 설문조사를 추천드립니다.<div class="mt-3 flex gap-2"><span class="text-[10px] bg-white border px-2 py-1 rounded text-gray-400">출처: 팟캐스트 Ep #42</span></div>',
+            feature1_title: '당신의 <br><span class="italic text-gray-500">톤과 목소리</span>를 복제하세요',
+            feature1_desc: '팟캐스트, 영상, 텍스트를 업로드하세요. Duplika가 당신의 말투, 습관, 고유한 개성을 학습하여 진짜 당신처럼 말하는 클론을 만듭니다.',
+            feature1_link: '클로닝에 대해 더 알아보기',
+            thinking_label: '지식 베이스',
+            thinking_title: '최고의 사고를 복제하세요.',
+            thinking_desc: '파일을 업로드하거나, YouTube를 연결하거나, Notion을 동기화하세요. Duplika가 당신의 디지털 발자국을 하나의 일관된 지성으로 통합합니다.',
+            output_chat: '1:1 채팅',
+            output_slack: '슬랙 봇',
+            output_embed: '웹사이트 임베드',
+            chat2_msg1: '안녕하세요! 저는 Mia의 AI입니다. 무엇을 도와드릴까요?',
+            chat2_msg2: '안녕하세요! 목표가 너무 많아서 좀 벅차네요.',
+            chat2_msg3: '이해합니다. 하나씩 정리해 볼까요? 지금 가장 큰 목표가 뭔가요?',
+            chat_placeholder: '메시지를 입력하세요...',
+            feature3_title: '다이렉트 링크. <br><span class="italic text-gray-500">즉각적인 연결.</span>',
+            feature3_desc: '인스타그램 바이오나 어떤 플랫폼에든 나만의 duplika.me 링크를 공유하세요. 팔로워가 클릭하면 즉시 당신의 AI와 1:1 채팅이 시작됩니다.',
+            feature3_item1: '바이오에 자연스럽게 통합',
+            feature3_item2: '즉각적인 1:1 채팅',
+            feature3_item3: '24시간 팔로워 응대',
+            monetize_label: '수익화',
+            monetize_title: '잠자는 동안에도 <br><span class="italic text-gray-400">수익을 창출하세요</span>',
+            monetize_desc: '분당 또는 메시지당 가격을 설정하세요. 당신의 지식을 무한히 확장 가능한 패시브 인컴으로 전환합니다.',
+            monetize_cta: '수익 시작하기',
+            dash_revenue: '총 수익',
+            dash_growth: '이번 주 +14%',
+            dash_call: 'Jason과의 통화',
+            footer_desc: '디지털 클로닝의 글로벌 선도 플랫폼. 외모가 아닌, 전문성을 복제하세요.',
+            footer_product: '제품',
+            footer_features: '기능',
+            footer_pricing: '요금제',
+            footer_company: '회사',
+            footer_about: '소개',
+            footer_blog: '블로그',
+            footer_social: '소셜',
+            footer_copyright: '&copy; 2025 Duplika Labs, Inc. All rights reserved.',
+            footer_privacy: '개인정보처리방침',
+            footer_terms: '이용약관',
+        }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+
+        // Toggle body font class
+        if (lang === 'ko') {
+            document.body.classList.add('lang-ko');
+        } else {
+            document.body.classList.remove('lang-ko');
+        }
+
+        // Toggle active state on buttons
+        document.getElementById('lang-ko').classList.toggle('active', lang === 'ko');
+        document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+
+        // Update text content
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang][key] !== undefined) {
+                el.textContent = translations[lang][key];
+            }
+        });
+
+        // Update HTML content
+        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+            const key = el.getAttribute('data-i18n-html');
+            if (translations[lang][key] !== undefined) {
+                el.innerHTML = translations[lang][key];
+            }
+        });
+
+        // Update placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (translations[lang][key] !== undefined) {
+                el.placeholder = translations[lang][key];
+            }
+        });
+    }
+    </script>
 
 </body>
 </html>
